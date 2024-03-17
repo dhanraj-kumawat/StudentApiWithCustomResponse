@@ -14,4 +14,7 @@ public class ApiResponse {
     private Object data;
     private Object error;
 
+    public ApiResponse(){
+        this.apiTimeStamp = new Date();
+    }
 }

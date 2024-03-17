@@ -17,8 +17,43 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/")
-    public String hi(){
-        return "hello";
+    public ResponseEntity<String> home(){
+        return ResponseEntity.ok().body("This is A Student Api CRUD Project in SpringBoot MVC\n" +
+                "\n" +
+                "\n" +
+                "-> user can get student information with id(primary key)\n" +
+                "\n" +
+                "eg. GET: http://localhost:8081/students\n" +
+                "\n" +
+                "-> user can get all the students\n" +
+                "\n" +
+                "eg. GET: http://localhost:8081/students\n" +
+                "\n" +
+                "-> user can register \n" +
+                "\n" +
+                "eg. POST: http://localhost:8081/students\n" +
+                "\n" +
+                "-> user can update information (id)\n" +
+                "\n" +
+                "eg. PUT: http://localhost:8081/students/id\n" +
+                "\n" +
+                "-> user can delete his account(id)\n" +
+                "\n" +
+                "eg. DELETE: http://localhost:8081/students/6\n" +
+                "\n" +
+                "@Custom queries:\n" +
+                "\n" +
+                "-> user can search all the students with name \n" +
+                "\n" +
+                "eg. GET: http://localhost:8081/students/search?name=ra\n" +
+                "\n" +
+                "-> Custom Exception Handling\n" +
+                "\n" +
+                "eg. StudentIdNotFound\n" +
+                "\n" +
+                "-> Custom Api Response with EntityResponse\n" +
+                "\n" +
+                "eg. ResponseApi");
     }
 
     @GetMapping("/students/{id}")
@@ -36,13 +71,21 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public List<StudentDTO> getStudents(){
-        return studentService.getStudents();
+    public ResponseEntity<ApiResponse> getStudents(){
+        List<StudentDTO>dbStudents = studentService.getStudents();
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setStatus("Success");
+        apiResponse.setData(dbStudents);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/students/search")  //http://localhost:8081/students/search?name=aj
-    public List<StudentDTO> findStudentsByName(@RequestParam(name = "") String name){
-        return studentService.findStudentsWithName(name);
+    public ResponseEntity<ApiResponse> findStudentsByName(@RequestParam(name = "") String name){
+        List<StudentDTO> dbstudents = studentService.findStudentsWithName(name);
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setData(dbstudents);
+        apiResponse.setStatus("Success");
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/students")
